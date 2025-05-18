@@ -1,8 +1,8 @@
 import { db } from '../services/firestoreService';
-import { createGetUserTool } from './getUser';
+import { createGetAgentTool } from './getAgent';
 
 
 export default [
-  createGetUserTool(db),
+  createGetAgentTool(db),
   // ...other tools
 ];

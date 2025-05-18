@@ -3,8 +3,8 @@ import { Firestore } from '@google-cloud/firestore';
 /**
  * Fetch a list of resources by IDs, returning only specified fields.
  * @param db Firestore instance
- * @param workspaceId The organization/workspace ID
- * @param collection The collection name (e.g. "tables", "memories", etc)
+ * @param workspaceId The workspace ID
+ * @param collection The collection name (e.g. "users" etc)
  * @param ids Array of document IDs to fetch
  * @param fields Array of field names to include in the result
  * @returns Array of objects, each containing only the requested fields
@@ -19,7 +19,7 @@ export async function fetchResourceList(
   const results: Array<Record<string, any>> = [];
   for (const id of ids || []) {
     const ref = db
-      .collection('organizations')
+      .collection('workspaces')
       .doc(workspaceId)
       .collection(collection)
       .doc(id);

@@ -17,8 +17,8 @@ async function checkWorkspaceAccess(
   if (!userDoc.exists) return false;
   const userData = userDoc.data();
   return (
-    Array.isArray(userData?.organizations) &&
-    userData.organizations.includes(workspaceId)
+    Array.isArray(userData?.workspaces) &&
+    userData.workspaces.includes(workspaceId)
   );
 }
 

@@ -22,7 +22,7 @@ This repository is intended as a learning resource to:
 ## Key Features & Patterns Demonstrated
 
 *   **MCP TypeScript SDK Integration:** Core server setup and tool registration.
-*   **OAuth 2.0 Token Validation:** Securely handling Bearer tokens (via a conceptual `getTokenAndUser` utility).
+*   **OAuth 2.0 Token Validation:** Securely handling Bearer tokens (via a conceptual `getToken` utility).
 *   **Workspace Context Management:**
     *   Explicit `workspace_id` in tool arguments.
     *   `withWorkspaceAccess` Higher-Order Component (HOC) for authentication and workspace authorization.
@@ -31,7 +31,7 @@ This repository is intended as a learning resource to:
     *   Using Firestore emulators for local development and testing.
 *   **Zod for Schemas & Validation:** Defining input schemas for tools and leveraging Zod for runtime validation.
 *   **Type-Safe Development:** Leveraging TypeScript for robust code.
-*   **Utility Functions:** Examples of `fetchResourceList` and `fetchModel` (or similar) for DRY data fetching.
+*   **Utility Functions:** Examples of `fetchResourceList` for DRY data fetching.
 *   **Standardized Error Handling:** Using `throw new Error()` for clear error propagation.
 *   **Example Tool Structures:** Basic tool definitions showcasing the patterns.
 *   **Environment Variable Configuration:** For database and OAuth settings.
@@ -48,7 +48,7 @@ This demo represents the **MCP Resource Server**. It expects OAuth 2.1 Bearer to
 [This MCP Resource Server (Node.js / TypeScript)]
        |  1. MCP SDK Middleware (parses request, extracts token)
        |  2. `withWorkspaceAccess` HOC
-       |     a. Calls `getTokenAndUser` (conceptual: validates token, fetches user from Firestore)
+       |     a. Calls `getToken` (conceptual: validates token, fetches user from Firestore)
        |     b. Calls `checkWorkspaceAccess` (conceptual: checks user's workspace permissions from Firestore)
        |  3. Tool Handler Execution (interacts with Firestore based on validated context)
        |
@@ -154,7 +154,7 @@ Look for these patterns in the `src` directory:
 .
 ├── src/
 │   ├── tools/                # Tool definitions
-│   │   ├── getUserTool.ts
+│   │   ├── getAgentTool.ts
 │   │   └── ...
 │   ├── utils/                # Shared utilities, HOCs, types
 │   │   ├── withWorkspaceAccess.ts
