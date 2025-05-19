@@ -15,7 +15,8 @@ export function createProxyProvider(db: Firestore) {
       revocationUrl,
       registrationUrl,
     },
-    verifyAccessToken: async (token) => {
+    // Used to parse the token from the request
+    verifyAccessToken: async (token: string) => {
       // Use db to verify the token
       const tokenDoc = await db
         .collection('oauth_access_tokens')
@@ -29,9 +30,12 @@ export function createProxyProvider(db: Firestore) {
         token,
         clientId: data?.client_id,
         scopes: data?.scope,
+        extra: {
+          userId: data?.user_id,
+        }
       };
     },
-    getClient: async (client_id) => {
+    getClient: async (client_id: string) => {
       // Use db to get the client
       const clientDoc = await db
         .collection('oauth_clients')

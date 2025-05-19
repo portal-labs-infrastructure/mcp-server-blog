@@ -24,7 +24,7 @@ This repository is intended as a learning resource to:
 ## Key Features & Patterns Demonstrated
 
 *   **MCP TypeScript SDK Integration:** Core server setup and tool registration.
-*   **OAuth 2.0 Token Validation:** Securely handling Bearer tokens (via a conceptual `getToken` utility).
+*   **OAuth 2.0 Token Validation:** Securely handling Bearer tokens (via the SDK middleware).
 *   **Workspace Context Management:**
     *   Explicit `workspace_id` in tool arguments.
     *   `withWorkspaceAccess` Higher-Order Component (HOC) for authentication and workspace authorization.
@@ -50,8 +50,7 @@ This demo represents the **MCP Resource Server**. It expects OAuth 2.1 Bearer to
 [This MCP Resource Server (Node.js / TypeScript)]
        |  1. MCP SDK Middleware (parses request, extracts token)
        |  2. `withWorkspaceAccess` HOC
-       |     a. Calls `getToken` (conceptual: validates token, fetches user from Firestore)
-       |     b. Calls `checkWorkspaceAccess` (conceptual: checks user's workspace permissions from Firestore)
+       |     a. Calls `checkWorkspaceAccess` using the userId parsed from the token by the MCP SDK Middleware
        |  3. Tool Handler Execution (interacts with Firestore based on validated context)
        |
        v
@@ -142,11 +141,12 @@ Look for these patterns in the `src` directory:
 
 *   **`src/index.ts`:** Main MCP server setup.
 *   **`src/controllers/mcpController.ts`:** Tool registration and MCP controller handling incoming requests.
+*   **`src/services/`:** Service layer for handling business logic and Firestore interactions.
+    *   **`authService.ts`:** Implementing the ProxyOAuthServerProvider class.
 *   **`src/tools/`:** Example tool definitions.
     *   Each tool will have an `inputSchema` (Zod) and a `handler`.
     *   Handlers will likely be wrapped with `withWorkspaceAccess`.
-*   **`src/utils/withWorkspaceAccess.ts`:** The Higher-Order Component for auth and workspace checks.
-*   **`src/utils/getToken.ts`:** Conceptual logic for validating OAuth tokens and fetching user data from Firestore. **Note:** Actual token validation against a JWKS URI or introspection endpoint will require libraries like `jose` or `openid-client`. This demo might simplify this part for brevity, focusing on the *pattern* of fetching user data post-validation.
+*   **`src/utils/withWorkspaceAccess.ts`:** The Higher-Order Component for workspace checks.
 *   **`src/utils/fetchResourceList.ts`:** Example of reusable data fetching utility.
 *   **`src/utils/types.ts`:** Shared TypeScript types and Zod schemas (e.g., for `EntityType`, `ResourceType`).
 
@@ -160,7 +160,6 @@ Look for these patterns in the `src` directory:
 │   │   └── ...
 │   ├── utils/                # Shared utilities, HOCs, types
 │   │   ├── withWorkspaceAccess.ts
-│   │   ├── getToken.ts
 │   │   ├── types.ts
 │   │   └── ...
 │   ├── services/             # Interaction logic

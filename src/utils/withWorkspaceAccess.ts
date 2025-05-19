@@ -6,7 +6,6 @@ import {
   ServerRequest,
 } from '@modelcontextprotocol/sdk/types';
 import { z } from 'zod';
-import { getToken } from './getToken';
 
 async function checkWorkspaceAccess(
   db: Firestore,
@@ -35,8 +34,7 @@ export function withWorkspaceAccess<T extends z.ZodTypeAny>(
     args: z.infer<T>,
     req: RequestHandlerExtra<ServerRequest, ServerNotification>,
   ) => {
-    const token = await getToken(db, req.authInfo?.token || '');
-    const userId = token?.user_id;
+    const userId = req.authInfo?.extra?.userId || ''
     if (!userId) throw new Error('No user ID found in token.');
     const hasAccess = await checkWorkspaceAccess(db, userId, args.workspace_id);
     if (!hasAccess)
