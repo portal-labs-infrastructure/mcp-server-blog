@@ -8,6 +8,8 @@ This repository provides a stripped-down, illustrative implementation of a Model
 
 This demo focuses on the **MCP Resource Server** component and assumes you have a separate OAuth 2.1 Authorization Server.
 
+Note: If testing this server with certain versions of the MCP SDK's ProxyOAuthServerProvider, you might encounter issues with the token exchange step. This is due to a known issue in some client versions where the required redirect_uri parameter is not sent to the /token endpoint (see [issue](https://github.com/modelcontextprotocol/typescript-sdk/issues/479)).
+
 ## Purpose
 
 This repository is intended as a learning resource to:
