@@ -150,7 +150,7 @@ Look for these patterns in the `src` directory:
 *   **`src/utils/fetchResourceList.ts`:** Example of reusable data fetching utility.
 *   **`src/utils/types.ts`:** Shared TypeScript types and Zod schemas (e.g., for `EntityType`, `ResourceType`).
 
-## Directory Structure (Example)
+## Directory Structure
 
 ```
 .
