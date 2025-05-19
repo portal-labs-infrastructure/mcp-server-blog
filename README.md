@@ -50,7 +50,8 @@ This demo represents the **MCP Resource Server**. It expects OAuth 2.1 Bearer to
 [This MCP Resource Server (Node.js / TypeScript)]
        |  1. MCP SDK Middleware (parses request, extracts token)
        |  2. `withWorkspaceAccess` HOC
-       |     a. Calls `checkWorkspaceAccess` using the userId parsed from the token by the MCP SDK Middleware
+       |     a. Using the userId associated with the token
+       |     b. Validates the user can access the workspace_id in the request
        |  3. Tool Handler Execution (interacts with Firestore based on validated context)
        |
        v
