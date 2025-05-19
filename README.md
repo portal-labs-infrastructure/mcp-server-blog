@@ -4,7 +4,7 @@
 
 This repository provides a stripped-down, illustrative implementation of a Model Context Protocol (MCP) server. It showcases the architectural patterns, security considerations (OAuth 2.1), and development practices (TypeScript, Firestore, Zod) detailed in our accompanying article:
 
-**➡️ Read the full story: "[The AI Backstage Pass: Building a Production-Ready MCP Server with OAuth, TypeScript, and Our Battle Scars](https://portal.one/the-ai-backstage-pass-building-a-production-ready-mcp-server-with-oauth-typescript-and-our-battle-scars)"**
+**➡️ Read the full story: "[Building a Production-Ready MCP Server with OAuth, TypeScript, and Our Battle Scars](https://portal.one/blog/the-ai-backstage-pass-building-a-production-ready-mcp-server-with-oauth-typescript-and-our-battle-scars/)"**
 
 This demo focuses on the **MCP Resource Server** component and assumes you have a separate OAuth 2.1 Authorization Server.
 
@@ -192,4 +192,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Acknowledgements
 
-This demo is heavily inspired by the experiences and patterns discussed in the article: "[The AI Backstage Pass: Building a Production-Ready MCP Server with OAuth, TypeScript, and Our Battle Scars](https://portal.one/the-ai-backstage-pass-building-a-production-ready-mcp-server-with-oauth-typescript-and-our-battle-scars)".
+This demo is heavily inspired by the experiences and patterns discussed in the article: "[Building a Production-Ready MCP Server with OAuth, TypeScript, and Our Battle Scars](https://portal.one/blog/the-ai-backstage-pass-building-a-production-ready-mcp-server-with-oauth-typescript-and-our-battle-scars/)".
