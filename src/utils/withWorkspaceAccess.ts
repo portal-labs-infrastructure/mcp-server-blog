@@ -27,7 +27,6 @@ export function withWorkspaceAccess<T extends z.ZodTypeAny>(
   handler: (
     args: z.infer<T>,
     req: RequestHandlerExtra<ServerRequest, ServerNotification>,
-    userId: string,
   ) => Promise<CallToolResult>,
 ) {
   return async (
@@ -39,6 +38,6 @@ export function withWorkspaceAccess<T extends z.ZodTypeAny>(
     const hasAccess = await checkWorkspaceAccess(db, userId, args.workspace_id);
     if (!hasAccess)
       throw new Error('You do not have access to this workspace.');
-    return handler(args, req, userId);
+    return handler(args, req);
   };
 }
