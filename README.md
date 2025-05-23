@@ -2,22 +2,20 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-This repository provides a stripped-down, illustrative implementation of a Model Context Protocol (MCP) server. It showcases the architectural patterns, security considerations (OAuth 2.1), and development practices (TypeScript, Firestore, Zod) detailed in our accompanying article:
+This repository provides a stripped-down, illustrative implementation of a Model Context Protocol (MCP) server. It showcases the architectural patterns, security considerations (OAuth 2.0), and development practices (TypeScript, Firestore, Zod) detailed in our accompanying article:
 
 **➡️ Read the full story: "[Building a Production-Ready MCP Server with OAuth, TypeScript, and Our Battle Scars](https://portal.one/blog/mcp-server-with-oauth-typescript/)"**
 
-This demo focuses on the **MCP Resource Server** component and assumes you have a separate OAuth 2.1 Authorization Server.
+This demo focuses on the **MCP Resource Server** component and assumes you have a separate OAuth 2.0 Authorization Server.
 
-Note: If testing this server with certain versions of the MCP SDK's ProxyOAuthServerProvider, you might encounter issues with the token exchange step. This is due to a known issue in some client versions where the required redirect_uri parameter is not sent to the /token endpoint (see [issue](https://github.com/modelcontextprotocol/typescript-sdk/issues/479)).
-
-Update: Bumped MCP SDK version to 1.12.0 which resolved the issue. Version 1.12.0 also introduced the Authorization Server Metadata (/.well-known/oauth-authorization-server) endpoint, which is now used to fetch the token endpoint URL and is provided to the `requireBearerAuth` middleware.
+Update: MCP SDK version 1.12.0 introduced the Authorization Server Metadata (/.well-known/oauth-authorization-server) support, which is now used to fetch the metadata from the OAuth authorization server and is provided to the `requireBearerAuth` middleware.
 
 
 ## Purpose
 
 This repository is intended as a learning resource to:
 *   Demonstrate a practical implementation of an MCP server using the TypeScript MCP SDK.
-*   Illustrate how to integrate OAuth 2.1 for securing tool calls.
+*   Illustrate how to integrate OAuth 2.0 for securing tool calls.
 *   Showcase patterns for managing workspace context and multi-tenancy.
 *   Provide examples of using Zod for schema definition and validation.
 *   Offer insights into structuring tools, using Higher-Order Components (HOCs) for common logic, and interacting with Firestore.
@@ -43,7 +41,7 @@ This repository is intended as a learning resource to:
 
 ## Architectural Overview
 
-This demo represents the **MCP Resource Server**. It expects OAuth 2.1 Bearer tokens issued by a separate **OAuth Authorization Server**.
+This demo represents the **MCP Resource Server**. It expects OAuth 2.0 Bearer tokens issued by a separate **OAuth Authorization Server**.
 
 ```
 [Client / LLM with MCP Client SDK]
@@ -73,7 +71,7 @@ This Resource Server then validates the tokens received from clients.
 *   Node.js (v18.x or later recommended)
 *   npm or yarn
 *   Access to a Google Cloud Project with Firestore enabled OR Google Cloud SDK configured for Firestore Emulator.
-*   An existing OAuth 2.1 Authorization Server.
+*   An existing OAuth 2.0 Authorization Server.
 
 ## Getting Started
 
@@ -104,7 +102,7 @@ This Resource Server then validates the tokens received from clients.
     PROJECT_ID="your-gcp-project-id"
     # FIRESTORE_EMULATOR_HOST="localhost:8081" # Uncomment if using emulator and not relying on gcloud config
 
-    # OAuth 2.1 Configuration (for this Resource Server to validate tokens)
+    # OAuth 2.0 Configuration (for this Resource Server to validate tokens)
     # This depends on your OAuth Authorization Server's setup.
     OAUTH_ISSUER_URL="https_your_auth_server_com"
 
