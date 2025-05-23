@@ -10,6 +10,9 @@ This demo focuses on the **MCP Resource Server** component and assumes you have 
 
 Note: If testing this server with certain versions of the MCP SDK's ProxyOAuthServerProvider, you might encounter issues with the token exchange step. This is due to a known issue in some client versions where the required redirect_uri parameter is not sent to the /token endpoint (see [issue](https://github.com/modelcontextprotocol/typescript-sdk/issues/479)).
 
+Update: Bumped MCP SDK version to 1.12.0 which resolved the issue. Version 1.12.0 also introduced the Authorization Server Metadata (/.well-known/oauth-authorization-server) endpoint, which is now used to fetch the token endpoint URL and is provided to the `requireBearerAuth` middleware.
+
+
 ## Purpose
 
 This repository is intended as a learning resource to:

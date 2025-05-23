@@ -26,8 +26,9 @@ app.use(
 app.use(
   '/mcp',
   requireBearerAuth({
-    provider: proxyProvider,
+    verifier: proxyProvider,
     requiredScopes: ['default'],
+    resourceMetadataUrl: new URL(OAUTH_ISSUER_URL).toString(),
   }),
   mcpRoutes,
 );
