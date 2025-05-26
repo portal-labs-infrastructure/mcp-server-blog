@@ -1,6 +1,8 @@
 import express from 'express';
 import morgan from 'morgan';
-import { mcpAuthRouter } from '@modelcontextprotocol/sdk/server/auth/router.js';
+import {
+  mcpAuthMetadataRouter,
+} from '@modelcontextprotocol/sdk/server/auth/router.js';
 import { requireBearerAuth } from '@modelcontextprotocol/sdk/server/auth/middleware/bearerAuth.js';
 import { createProxyProvider } from './services/authService';
 import mcpRoutes from './routes/mcpRoutes';
@@ -11,15 +13,31 @@ import packageJson from '../package.json';
 const proxyProvider = createProxyProvider(db);
 
 const app = express();
+app.set('trust proxy', 1 /* number of proxies between user and server */);
 app.use(express.json());
 app.use(morgan('dev'));
 
 app.use(
-  mcpAuthRouter({
-    provider: proxyProvider,
-    issuerUrl: new URL(OAUTH_ISSUER_URL),
-    baseUrl: new URL(BASE_URL),
+  mcpAuthMetadataRouter({
+    oauthMetadata: {
+      issuer: OAUTH_ISSUER_URL,
+      authorization_endpoint: `${OAUTH_ISSUER_URL}/oauth/authorize`,
+      token_endpoint: `${OAUTH_ISSUER_URL}/oauth/token`,
+      registration_endpoint: 
+        `${OAUTH_ISSUER_URL}/oauth/register`,
+      scopes_supported: ['default'],
+      response_types_supported: ['code'],
+      grant_types_supported: ['authorization_code', 'refresh_token'],
+      token_endpoint_auth_methods_supported: ['client_secret_post', 'none'],
+      service_documentation: DOCS_URL,
+      revocation_endpoint: 
+        `${OAUTH_ISSUER_URL}/oauth/revoke`,
+      code_challenge_methods_supported: ['S256'],
+    },
+    resourceServerUrl: new URL(BASE_URL),
     serviceDocumentationUrl: new URL(DOCS_URL),
+    scopesSupported: ['default'],
+    resourceName: packageJson.name,
   }),
 );
 
