@@ -13,10 +13,10 @@ import packageJson from '../package.json';
 const proxyProvider = createProxyProvider(db);
 
 const app = express();
-app.set('trust proxy', 1 /* number of proxies between user and server */);
 app.use(express.json());
 app.use(morgan('dev'));
 
+// Switched to using the `mcpAuthMetadataRouter` here:
 app.use(
   mcpAuthMetadataRouter({
     oauthMetadata: {
@@ -41,6 +41,7 @@ app.use(
   }),
 );
 
+// Still using the `proxyProvider` for it's implementation of `verifyToken`:
 app.use(
   '/mcp',
   requireBearerAuth({
