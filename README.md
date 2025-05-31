@@ -8,7 +8,7 @@ This repository provides a stripped-down, illustrative implementation of a Model
 
 This demo focuses on the **MCP Resource Server** component and assumes you have a separate OAuth 2.0 Authorization Server.
 
-Update: MCP SDK version 1.12.0 introduced the Authorization Server Metadata (/.well-known/oauth-authorization-server) support, which is now used to fetch the metadata from the OAuth authorization server and is provided to the `requireBearerAuth` middleware.
+Update: MCP SDK version 1.12.0 introduced the Authorization Server Metadata (/.well-known/oauth-authorization-server) support and removes the need to proxy the oauth calls through the MCP resource server.
 
 
 ## Purpose
