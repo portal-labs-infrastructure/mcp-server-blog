@@ -4,36 +4,35 @@ import {
   mcpAuthMetadataRouter,
 } from '@modelcontextprotocol/sdk/server/auth/router.js';
 import { requireBearerAuth } from '@modelcontextprotocol/sdk/server/auth/middleware/bearerAuth.js';
-import { createProxyProvider } from './services/authService';
 import mcpRoutes from './routes/mcpRoutes';
 import { OAUTH_ISSUER_URL, BASE_URL, DOCS_URL, PORT } from './config';
-import { db } from './services/firestoreService';
 import packageJson from '../package.json';
-
-const proxyProvider = createProxyProvider(db);
+import { verifyAccessToken } from './utils/verifyAccessToken';
 
 const app = express();
 app.use(express.json());
 app.use(morgan('dev'));
 
-// Switched to using the `mcpAuthMetadataRouter` here:
+// Same OAuth metadata that is returned by the OAuth server
+const oauthMetadata = {
+  issuer: OAUTH_ISSUER_URL,
+  authorization_endpoint: `${OAUTH_ISSUER_URL}/oauth/authorize`,
+  token_endpoint: `${OAUTH_ISSUER_URL}/oauth/token`,
+  registration_endpoint: 
+    `${OAUTH_ISSUER_URL}/oauth/register`,
+  scopes_supported: ['default'],
+  response_types_supported: ['code'],
+  grant_types_supported: ['authorization_code', 'refresh_token'],
+  token_endpoint_auth_methods_supported: ['client_secret_post', 'none'],
+  service_documentation: DOCS_URL,
+  revocation_endpoint: 
+    `${OAUTH_ISSUER_URL}/oauth/revoke`,
+  code_challenge_methods_supported: ['S256'],
+}
+
 app.use(
   mcpAuthMetadataRouter({
-    oauthMetadata: {
-      issuer: OAUTH_ISSUER_URL,
-      authorization_endpoint: `${OAUTH_ISSUER_URL}/oauth/authorize`,
-      token_endpoint: `${OAUTH_ISSUER_URL}/oauth/token`,
-      registration_endpoint: 
-        `${OAUTH_ISSUER_URL}/oauth/register`,
-      scopes_supported: ['default'],
-      response_types_supported: ['code'],
-      grant_types_supported: ['authorization_code', 'refresh_token'],
-      token_endpoint_auth_methods_supported: ['client_secret_post', 'none'],
-      service_documentation: DOCS_URL,
-      revocation_endpoint: 
-        `${OAUTH_ISSUER_URL}/oauth/revoke`,
-      code_challenge_methods_supported: ['S256'],
-    },
+    oauthMetadata,
     resourceServerUrl: new URL(BASE_URL),
     serviceDocumentationUrl: new URL(DOCS_URL),
     scopesSupported: ['default'],
@@ -41,11 +40,14 @@ app.use(
   }),
 );
 
-// Still using the `proxyProvider` for it's implementation of `verifyToken`:
+const verifier = {
+  verifyAccessToken
+}
+
 app.use(
   '/mcp',
   requireBearerAuth({
-    verifier: proxyProvider,
+    verifier,
     requiredScopes: ['default'],
     resourceMetadataUrl: new URL(OAUTH_ISSUER_URL).toString(),
   }),
